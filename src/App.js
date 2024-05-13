@@ -14,6 +14,7 @@ import ProtectedRoute from './Authentication/ProtectedRoute';
 import Profile from './Pages/Profile';
 import Exam from './Pages/Exam';
 import ExamPage from './Pages/ExamPage';
+import Course from './Pages/Course';
 
   
 
@@ -47,6 +48,7 @@ function App() {
           <Route exact path='/contact' element={<Contacts/>}/>
           <Route exact path='/about' element={<About/>}/>
           <Route exact path='/certificate' element={<Certificate/>}/>
+          <Route exact path='/courses' element={<Course/>}/>
           <Route path='*' element={<h1>Page not found</h1>}/>
         </Routes>
       </UserAuthContextProvider>

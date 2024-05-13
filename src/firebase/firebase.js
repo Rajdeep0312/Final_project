@@ -3,14 +3,15 @@ import { getAuth } from 'firebase/auth';
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAXbvA-Jd9GXRf4xtAYF_fcj1xepy8uAcE",
-  authDomain: "igca-3d357.firebaseapp.com",
-  projectId: "igca-3d357",
-  storageBucket: "igca-3d357.appspot.com",
-  messagingSenderId: "759975012878",
-  appId: "1:759975012878:web:866adcd8b28a7083f3aa5f"
+  apiKey: "AIzaSyD1xRBGhjcVgLOyBYL63D327YQHktVQ5SM",
+  authDomain: "final-year-project-b1ebf.firebaseapp.com",
+  databaseURL: "https://final-year-project-b1ebf-default-rtdb.firebaseio.com",
+  projectId: "final-year-project-b1ebf",
+  storageBucket: "final-year-project-b1ebf.appspot.com",
+  messagingSenderId: "1031739619080",
+  appId: "1:1031739619080:web:1997059912e459f1325ebd",
+  measurementId: "G-3BF25HGXX7"
 };
-
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
