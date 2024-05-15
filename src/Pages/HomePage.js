@@ -59,7 +59,9 @@ const HomePage = () => {
            More than 500 courses
           </Typography>
           <div className="button-navi">
-          <button className='btn'>Courses</button>
+          <button className='btn' onClick={()=>{
+            navi('/courses');
+          }}>Courses</button>
           <button className='btn' onClick={hcert}>Certificate</button>
         </div>
         </div>

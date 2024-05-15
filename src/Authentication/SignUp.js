@@ -37,23 +37,56 @@ export default function SignUp() {
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [userData, setUserData] = useState({
+    firstName : "",
+    lastName : "",
+    email : "",
+    password : ""
+});
+
+let name, value;
+const postUserData = (e) =>{
+  name = e.target.name;
+  value = e.target.value;
+  setUserData({...userData, [name]:value})
+}
+
   const [error, setError] = useState("");
 
   const { signUp } = useUserAuth();
 
   const navi = useNavigate();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setError("");
-    try {
-      await signUp(email,password);
-      navi('/dashboard');
-    } catch (err) {
-      setError(err.message)
-      console.log(err)
+  const postData = async (e)=>{
+    e.preventDefault();
+    const {firstName, lastName, email, password} = userData;
+    const res = await fetch('https://final-year-project-b1ebf-default-rtdb.firebaseio.com/signupData.json', {
+      method: "POST",
+      headers:{
+        "Content-Type" : "application/json",
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        password
+      }),
+    });
+    if (res) {
+      console.log(res);
+      setError("");
+      try {
+        await signUp(email,password);
+        navi('/dashboard');
+      } catch (err) {
+        setError(err.message)
+        console.log(err)
+      }
+    } else {
+      console.log("fill user data")
     }
-  };
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -77,7 +110,7 @@ export default function SignUp() {
 
           {error && <Alert sx={{marginTop:2}} severity="error">{error}</Alert>}
 
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <form noValidate method='POST' sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -86,10 +119,9 @@ export default function SignUp() {
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  value={userData.firstName}
                   autoFocus
-                  onChange={(e)=>{
-                    setFname(e.target.value)
-                  }}
+                  onChange={postUserData}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -99,9 +131,8 @@ export default function SignUp() {
                   id="lastName"
                   label="Last Name"
                   name="lastName"
-                  onChange={(e)=>{
-                    setLname(e.target.value)
-                  }}
+                  value={userData.lastName}
+                  onChange={postUserData}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -111,9 +142,8 @@ export default function SignUp() {
                   id="email"
                   label="Email Address"
                   name="email"
-                  onChange={(e)=>{
-                    setEmail(e.target.value)
-                  }}
+                  value={userData.email}
+                  onChange={postUserData}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -124,9 +154,8 @@ export default function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
-                  onChange={(e)=>{
-                    setPassword(e.target.value)
-                  }}
+                  value={userData.password}
+                  onChange={postUserData}
                 />
               </Grid>
             </Grid>
@@ -135,6 +164,7 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={postData}
             >
               Sign Up
             </Button>
@@ -145,7 +175,7 @@ export default function SignUp() {
                 </Link>                                
               </Grid>
             </Grid>
-          </Box>
+          </form>
         </Card>
         <Copyright sx={{ mt: 5 }} />
       </Container>
