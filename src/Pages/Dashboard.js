@@ -189,7 +189,7 @@ function DashboardContent() {
               Dashboard
             </Typography>
 
-            {user && user.email}
+            {user && user.displayName}
             
             <IconButton color="inherit" onClick={handleLogout}>
               <LogoutIcon/>
