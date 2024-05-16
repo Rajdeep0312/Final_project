@@ -61,6 +61,8 @@ const HomePage = () => {
           <div className="button-navi">
           <button className='btn pointer' onClick={()=>{
             navi("/courses")
+          }} onClick={()=>{
+            navi('/courses');
           }}>Courses</button>
           <button className="btn pointer" onClick={hcert}>Certificate</button>
         </div>

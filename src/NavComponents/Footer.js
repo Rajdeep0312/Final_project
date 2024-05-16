@@ -54,7 +54,7 @@ const Footer = () => {
         >
           <Grid item>
             <img className='im' src="images/pic4.jpg" alt="" />
-            <Typography>My App</Typography>
+            <Typography>SkillSphere</Typography>
           </Grid>
           <Grid sx={{display:'flex', flexDirection:'column'}}>
             <Typography variant='h5' component='div'>Contact Info</Typography>
