@@ -73,3 +73,11 @@ a:-webkit-any(:any-link){
 .im{
     height: 5em;
 }
+.pointer{
+    cursor: pointer;
+}
+
+.view-course-image{
+    width: 25rem;
+    height: 25rem;
+}

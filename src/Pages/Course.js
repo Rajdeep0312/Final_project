@@ -9,11 +9,14 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const Course = () => {
 
     const [courseData, setCourseData] = useState([]);
+    const navi = useNavigate();
+    
 
 
     useEffect(() => {
@@ -42,6 +45,7 @@ const Course = () => {
     
     }, [])
     
+    
 
 
 
@@ -50,14 +54,12 @@ const Course = () => {
         <DrawerAppBar/>
             <Box sx={{p:2}}>
                 <Toolbar/>
-
                 <Typography variant='h3' sx={{textAlign : 'center', marginBottom : "2rem" , padding : "5px"}}>Courses</Typography>
 
 
                 <Container sx={{mx:'auto', }}>
                 <Grid container spacing={3}>
                 {courseData.map((data)=>(
-
                 <Grid key={data.id} item xs={2} sm={4} md={4} sx={{ padding: "0px"}}>
                     <Card sx={{ maxWidth: 345 }}>
                         <CardMedia
@@ -74,7 +76,9 @@ const Course = () => {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small">View</Button>
+                            <Button size="small" onClick={()=>{
+                                navi('/viewcourses')
+                            }}>View</Button>
                             <Button size="small">Apply Now</Button>
                         </CardActions>
                     </Card>
@@ -90,5 +94,6 @@ const Course = () => {
     </>
   )
 }
+
 
 export default Course

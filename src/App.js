@@ -15,6 +15,7 @@ import Profile from './Pages/Profile';
 import Exam from './Pages/Exam';
 import ExamPage from './Pages/ExamPage';
 import Course from './Pages/Course';
+import ViewCourse from './Pages/ViewCourse';
 
   
 
@@ -47,6 +48,7 @@ function App() {
           }/>
           <Route exact path='/contact' element={<Contacts/>}/>
           <Route exact path='/about' element={<About/>}/>
+          <Route exact path='/viewcourses' element={<ViewCourse/>}/>
           <Route exact path='/certificate' element={<Certificate/>}/>
           <Route exact path='/courses' element={<Course/>}/>
           <Route path='*' element={<h1>Page not found</h1>}/>
