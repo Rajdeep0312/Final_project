@@ -205,7 +205,7 @@ function DashboardContent() {
               px: [1],
             }}
           >
-          <Typography sx={{marginLeft:5}} variant='h5'>My App</Typography>
+          <Typography sx={{marginLeft:5}} variant='h5'>SkillSprint</Typography>
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
