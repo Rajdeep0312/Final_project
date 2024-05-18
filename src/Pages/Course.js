@@ -8,59 +8,50 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useUserAuth } from '../Authentication/UseAuthContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const Course = () => {
 
-    const [courseData, setCourseData] = useState([]);
-    const navi = useNavigate();
-    
+    const [courseData, setCourseData] = useState([])
+    const [loading, setLoading] = useState(true);
 
+    const navi = useNavigate();
+
+    const { data } = useUserAuth();
 
     useEffect(() => {
-        const options = {
-        method: 'GET',
-        url: 'https://courses9.p.rapidapi.com/api/v6/website/labels',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-RapidAPI-Key': '1462331492msh4263adfe366c539p137e91jsn3ce32463ad72',
-            'X-RapidAPI-Host': 'courses9.p.rapidapi.com'
-        }
-        };
-
-        async function getData() {
-            try {
-              const response = await axios.request(options);
-              setCourseData(response.data.data);
-            } catch (error) {
-              console.error(error);
+        function dataLoading(){
+            if (!data) {
+                setLoading(true);
             }
-          } 
-
-        return() =>{
-            getData()
+            else{
+                setLoading(false)
+                setCourseData(data.data)
+            }
         }
-    
-    }, [])
-    
+        dataLoading();
+        
+    }, [data]);  
     
 
-
-
+    
   return (
     <>
         <DrawerAppBar/>
             <Box sx={{p:2}}>
                 <Toolbar/>
+
+                {loading ? <CircularProgress/>
+                :
+                <>
                 <Typography variant='h3' sx={{textAlign : 'center', marginBottom : "2rem" , padding : "5px"}}>Courses</Typography>
-
-
                 <Container sx={{mx:'auto', }}>
                 <Grid container spacing={3}>
-                {courseData.map((data)=>(
-                <Grid key={data.id} item xs={2} sm={4} md={4} sx={{ padding: "0px"}}>
+                {courseData.map((d)=>(
+                <Grid key={d.id} item xs={2} sm={4} md={4} sx={{ padding: "0px"}}>
                     <Card sx={{ maxWidth: 345 }}>
                         <CardMedia
                             sx={{ height: 140 }}
@@ -69,24 +60,26 @@ const Course = () => {
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                            {data.name}
+                            {d.name}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, nobis.
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" onClick={()=>{
-                                navi('/viewcourses')
+                            <Button variant='contained' size="small" onClick={()=>{
+                                navi(`/viewcourses/${d.name}/${d.id}`)
                             }}>View</Button>
-                            <Button size="small">Apply Now</Button>
+                            <Button variant='outlined' size="small">Apply Now</Button>
                         </CardActions>
                     </Card>
                 </Grid>
 
                 ))}
                 </Grid>
-                </Container>
+                </Container>     
+                </>
+            }
                 
             
             </Box>

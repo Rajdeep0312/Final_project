@@ -12,10 +12,7 @@ const options = {
 export const fetchData = async () => {
     try {
       const response = await axios.request(options);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
+      const data = response.data;
       return data;
     } catch (error) {
       console.error('Fetch error:', error);

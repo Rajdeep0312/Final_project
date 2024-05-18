@@ -46,8 +46,8 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="/">
+        SkillSphere
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -105,26 +105,7 @@ const mdTheme = createTheme();
 
 
 
-const sidebar = [
-  {
-    key:1,
-    title:"Profile",
-    icons : <AccountCircleIcon/>,
-    link:'/dashboard/profile'
-  },
-  {
-    key:2,
-    title:"Exam",
-    icons : <AssignmentIcon/>,
-    link:'/dashboard/exam'
-  },
-  {
-    key:3,
-    title:"Home",
-    icons : <HomeIcon/>,
-    link:'/'
-  }
-];
+
 
 
 
@@ -141,6 +122,28 @@ function DashboardContent() {
 
   const [error, setError] = useState("")
   const { user, logout } = useUserAuth();
+
+  const sidebar = [
+    {
+      key:1,
+      title:"Profile",
+      icons : <AccountCircleIcon/>,
+      link:`/dashboard/${user.displayName}/profile`
+    },
+    {
+      key:2,
+      title:"Exam",
+      icons : <AssignmentIcon/>,
+      link:`/dashboard/${user.displayName}/exam`
+    },
+    {
+      key:3,
+      title:"Home",
+      icons : <HomeIcon/>,
+      link:'/'
+    }
+  ];
+  
 
   const handleLogout = async (e) =>{
     try {
@@ -205,7 +208,7 @@ function DashboardContent() {
               px: [1],
             }}
           >
-          <Typography sx={{marginLeft:5}} variant='h5'>My App</Typography>
+          <Typography sx={{marginLeft:5}} variant='h5'>SkillSphere</Typography>
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>

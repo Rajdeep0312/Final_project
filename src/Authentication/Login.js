@@ -75,6 +75,10 @@ export default function Login(){
 const toggleswitch=()=>{
   navigate('/adminlogin')
 }
+const resetPass = (e) =>{
+  e.preventDefault();
+  navigate("/resetpassword");
+}
 
 
 
@@ -141,7 +145,9 @@ const toggleswitch=()=>{
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#">
+                <Link hrcomponent="button"
+                  variant="body2"
+                  onClick={resetPass}>
                   Forgot password?
                 </Link>
               </Grid>

@@ -16,6 +16,7 @@ import Exam from './Pages/Exam';
 import ExamPage from './Pages/ExamPage';
 import Course from './Pages/Course';
 import ViewCourse from './Pages/ViewCourse';
+import ResetPass from './Pages/ResetPass';
 
   
 
@@ -32,7 +33,7 @@ function App() {
           <Route exact path='/register' element={<SignUp/>}/>
           <Route exact path='/adminlogin' element={<AdminLogin/>}/>
 
-          <Route exact path='/dashboard' element={
+          <Route exact path='/dashboard/:name' element={
             <ProtectedRoute>
               <Dashboard/>
             </ProtectedRoute>
@@ -48,9 +49,10 @@ function App() {
           }/>
           <Route exact path='/contact' element={<Contacts/>}/>
           <Route exact path='/about' element={<About/>}/>
-          <Route exact path='/viewcourses' element={<ViewCourse/>}/>
+          <Route exact path='/viewcourses/:name/:id' element={<ViewCourse/>}/>
           <Route exact path='/certificate' element={<Certificate/>}/>
           <Route exact path='/courses' element={<Course/>}/>
+          <Route exact path='/resetpassword' element={<ResetPass/>}/>
           <Route path='*' element={<h1>Page not found</h1>}/>
         </Routes>
       </UserAuthContextProvider>

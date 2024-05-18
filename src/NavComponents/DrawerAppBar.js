@@ -27,52 +27,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../Authentication/UseAuthContext';
 
 const drawerWidth = 240;
-const navItems = [
-  {
-      id:1,
-      to: '/',
-      name: 'Home',
-  },
-  {
-      id:2,
-      to: '/contact',
-      name: 'Contact',
-  },
-  {
-      id:3,
-      to: '/about',
-      name: 'About',
-  },
-  {
-      id:4,
-      to: '/certificate',
-      name:'Certificate',
-  }
-];
 
-
-const settings = [
-  {
-    id:1,
-    name:'Profile',
-    link: '/dashboard/profile'
-  },
-  {
-    id:2,
-    name:'Exam',
-    link: '/dashboard/exam'
-  },
-  {
-    id:3,
-    name:'Dashboard',
-    link: '/dashboard'
-  },
-  {
-    id:4,
-    name:'Logout',
-    link: 'signout'
-  }
-];
 
 
 
@@ -141,6 +96,53 @@ function DrawerAppBar(props) {
 
 
   const { user, logout } = useUserAuth();
+
+  const navItems = [
+    {
+        id:1,
+        to: '/',
+        name: 'Home',
+    },
+    {
+        id:2,
+        to: '/contact',
+        name: 'Contact',
+    },
+    {
+        id:3,
+        to: '/about',
+        name: 'About',
+    },
+    {
+        id:4,
+        to: '/certificate',
+        name:'Certificate',
+    }
+  ];
+  
+  
+  const settings = [
+    {
+      id:1,
+      name:'Profile',
+      link: `/dashboard/${user.displayName}/profile`
+    },
+    {
+      id:2,
+      name:'Exam',
+      link: `/dashboard/${user.displayName}/exam`
+    },
+    {
+      id:3,
+      name:'Dashboard',
+      link: `/dashboard/${user.displayName}`
+    },
+    {
+      id:4,
+      name:'Logout',
+      link: 'signout'
+    }
+  ];
 
   const navi = useNavigate();
 
@@ -240,7 +242,7 @@ function DrawerAppBar(props) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar />
+                <Avatar alt="profileImg" src={user.photoURL}/>
               </IconButton>
             </Tooltip>
             <Menu
