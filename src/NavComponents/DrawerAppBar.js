@@ -125,17 +125,17 @@ function DrawerAppBar(props) {
     {
       id:1,
       name:'Profile',
-      link: `/dashboard/${user.displayName}/profile`
+      link: `/dashboard/profile`
     },
     {
       id:2,
       name:'Exam',
-      link: `/dashboard/${user.displayName}/exam`
+      link: `/dashboard/exam`
     },
     {
       id:3,
       name:'Dashboard',
-      link: `/dashboard/${user.displayName}`
+      link: `/dashboard`
     },
     {
       id:4,

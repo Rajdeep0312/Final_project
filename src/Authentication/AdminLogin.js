@@ -53,7 +53,8 @@ export default function AdminLogin(){
 
         try {
           if(email === 'rootuser@gmail.com' && password === '123456789'){
-          navigate('/certificate');}
+          navigate('/admindashboard');
+        }
           else{
             setError('Username wrong')
           }

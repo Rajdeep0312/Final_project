@@ -7,7 +7,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 
@@ -42,6 +42,8 @@ const ViewCourse = () => {
         setValue(newValue);
     };
 
+    const navigate = useNavigate();
+
 
 
 
@@ -55,7 +57,7 @@ const ViewCourse = () => {
                     <h1>{id} {name}</h1>
                     <p>Launch your career as a business analyst. Build job-ready skills for an in-demand career in business analysis in as little as 3 months. No prior experience required to get started.</p>
                     <p>Instructor : <Link href='#'>Rajdeep</Link></p>
-                    <Button variant='contained' sx={{marginTop:"1em"}}>Apply Now</Button>
+                    <Button variant='contained' sx={{marginTop:"1em"}} onClick={()=>{navigate(`/apply/${id}`)}}>Apply Now</Button>
                     <Box sx={{ width:"100%",boxShadow: "rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px", marginTop:"2em" }}>
                         <Tabs
                             value={value}

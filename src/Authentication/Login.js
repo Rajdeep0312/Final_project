@@ -110,7 +110,7 @@ const resetPass = (e) =>{
 
           {error && <Alert sx={{marginTop:2}} severity="error">{error}</Alert>}
 
-          <Box component="form" method='get' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" method='get' autoComplete='off' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required

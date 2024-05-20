@@ -126,15 +126,15 @@ function DashboardContent() {
   const sidebar = [
     {
       key:1,
-      title:"Profile",
+      title:"User",
       icons : <AccountCircleIcon/>,
-      link:`/dashboard/profile`
+      link:`/admindashboard/users`
     },
     {
       key:2,
-      title:"Exam",
+      title:"Courses",
       icons : <AssignmentIcon/>,
-      link:`/dashboard/exam`
+      link:`/admindashboard/courses`
     },
     {
       key:3,
@@ -168,6 +168,8 @@ function DashboardContent() {
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
+              display:"flex",
+              justifyContent:"space-between"
             }}
           >
             <IconButton
@@ -182,15 +184,7 @@ function DashboardContent() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Dashboard
-            </Typography>
+
 
             {user && user.displayName}
             
@@ -208,7 +202,7 @@ function DashboardContent() {
               px: [1],
             }}
           >
-          <Typography sx={{marginLeft:5}} variant='h5'>SkillSphere</Typography>
+          <Typography sx={{marginLeft:5}} variant='h7'>Admin Dashboard</Typography>
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
@@ -248,6 +242,8 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+
+
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -263,6 +259,6 @@ function DashboardContent() {
   );
 }
 
-export default function Dashboard() {
+export default function DashboardAdmin() {
   return <DashboardContent />;
 }

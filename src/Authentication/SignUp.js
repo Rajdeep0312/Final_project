@@ -32,12 +32,6 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-
-  const [fname, setFname] = useState("");
-  const [lname, setLname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const [userData, setUserData] = useState({
     firstName : "",
     lastName : "",
@@ -61,7 +55,7 @@ const postUserData = (e) =>{
   const postData = async (e)=>{
     e.preventDefault();
     const {firstName, lastName, email, password} = userData;
-    const res = await fetch('https://final-year-project-b1ebf-default-rtdb.firebaseio.com/signupData.json', {
+    const res = await fetch('https://final-year-project-b1ebf-default-rtdb.firebaseio.com/userData.json', {
       method: "POST",
       headers:{
         "Content-Type" : "application/json",
@@ -74,17 +68,16 @@ const postUserData = (e) =>{
       }),
     });
     if (res) {
-      console.log(res);
       setError("");
       try {
         await signUp(email,password);
-        navi('/dashboard');
+        navi('/');
       } catch (err) {
         setError(err.message)
         console.log(err)
       }
     } else {
-      console.log("fill user data")
+      alert("fill user data")
     }
   }
 

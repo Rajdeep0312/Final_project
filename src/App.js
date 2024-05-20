@@ -17,6 +17,10 @@ import ExamPage from './Pages/ExamPage';
 import Course from './Pages/Course';
 import ViewCourse from './Pages/ViewCourse';
 import ResetPass from './Pages/ResetPass';
+import Apply from './Pages/Apply';
+import DashboardAdmin from './Admin/DashboardAdmin';
+import Users from './Admin/Users';
+import AdminCourse from './Admin/AdminCourse';
 
   
 
@@ -33,7 +37,7 @@ function App() {
           <Route exact path='/register' element={<SignUp/>}/>
           <Route exact path='/adminlogin' element={<AdminLogin/>}/>
 
-          <Route exact path='/dashboard/:name' element={
+          <Route exact path='/dashboard' element={
             <ProtectedRoute>
               <Dashboard/>
             </ProtectedRoute>
@@ -47,9 +51,18 @@ function App() {
               <ExamPage/>
             </ProtectedRoute>
           }/>
+
+          {/* Admin--------------- */}
+          <Route path='/admindashboard' element={<DashboardAdmin/>}>
+            <Route index element={<Navigate to="users" replace/>}/>
+            <Route path='users' element={<Users/>}/>
+            <Route path='courses' element={<AdminCourse/>}/>
+          </Route>
+
           <Route exact path='/contact' element={<Contacts/>}/>
           <Route exact path='/about' element={<About/>}/>
           <Route exact path='/viewcourses/:name/:id' element={<ViewCourse/>}/>
+          <Route exact path='/apply/:id' element={<Apply/>}/>
           <Route exact path='/certificate' element={<Certificate/>}/>
           <Route exact path='/courses' element={<Course/>}/>
           <Route exact path='/resetpassword' element={<ResetPass/>}/>
