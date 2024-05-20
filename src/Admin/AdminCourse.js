@@ -10,11 +10,9 @@ import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { Label } from '@mui/icons-material';
-import { get, onValue, ref } from 'firebase/database';
+import { get, ref } from 'firebase/database';
 import { database } from '../firebase/firebase';
 
 
