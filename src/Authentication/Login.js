@@ -21,8 +21,8 @@ function Copyright(props) {
     return (
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
-        <Link color="inherit" href="https://igca.co.in/">
-          LOGO
+        <Link color="inherit" to={"/"}>
+          SkillSphere
         </Link>{' '}
         {new Date().getFullYear()}
         {'.'}

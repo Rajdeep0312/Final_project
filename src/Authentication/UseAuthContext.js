@@ -46,9 +46,12 @@ export function UserAuthContextProvider({children}) {
 
 
     useEffect(() => {
+        // usercalling-------------------------------------------
         const unsubscribe = onAuthStateChanged(auth, (currentUser)=>{            
             setUser(currentUser);
         });
+
+        // Api calling---------------------------------------------------------
         const getData = async () => {
             const result = await fetchData();
             setData(result);

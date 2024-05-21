@@ -7,6 +7,7 @@ import HomePage from './Pages/HomePage';
 import Contacts from './singlepage/Contacts';
 import About from './singlepage/About';
 import AdminLogin from './Authentication/AdminLogin';
+import AdminSignUp from './Authentication/AdminSignUp';
 import SignUp from './Authentication/SignUp';
 import { Certificate } from './Pages/Certificate';
 import { UserAuthContextProvider } from './Authentication/UseAuthContext';
@@ -21,6 +22,7 @@ import Apply from './Pages/Apply';
 import DashboardAdmin from './Admin/DashboardAdmin';
 import Users from './Admin/Users';
 import AdminCourse from './Admin/AdminCourse';
+import ProtectedAdminRoute from './Admin/ProtectedAdminRoute';
 
   
 
@@ -36,6 +38,7 @@ function App() {
           <Route exact path='/login' element={<Login/>}/>
           <Route exact path='/register' element={<SignUp/>}/>
           <Route exact path='/adminlogin' element={<AdminLogin/>}/>
+          <Route exact path='/adminsignup' element={<AdminSignUp/>}/>
 
           <Route exact path='/dashboard' element={
             <ProtectedRoute>
@@ -53,7 +56,11 @@ function App() {
           }/>
 
           {/* Admin--------------- */}
-          <Route path='/admindashboard' element={<DashboardAdmin/>}>
+          <Route path='/admindashboard' element={
+            <ProtectedAdminRoute>
+              <DashboardAdmin/>
+            </ProtectedAdminRoute>
+          }>
             <Route index element={<Navigate to="users" replace/>}/>
             <Route path='users' element={<Users/>}/>
             <Route path='courses' element={<AdminCourse/>}/>
@@ -62,7 +69,7 @@ function App() {
           <Route exact path='/contact' element={<Contacts/>}/>
           <Route exact path='/about' element={<About/>}/>
           <Route exact path='/viewcourses/:name/:id' element={<ViewCourse/>}/>
-          <Route exact path='/apply/:id' element={<Apply/>}/>
+          <Route exact path='/apply/:id/:cname' element={<Apply/>}/>
           <Route exact path='/certificate' element={<Certificate/>}/>
           <Route exact path='/courses' element={<Course/>}/>
           <Route exact path='/resetpassword' element={<ResetPass/>}/>

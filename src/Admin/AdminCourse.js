@@ -55,7 +55,6 @@ const AdminCourse = () => {
         }),
       });
       if (response) {
-        console.log(response);
         alert("data submitted")
         setError("");
         setDialogOpen(false);

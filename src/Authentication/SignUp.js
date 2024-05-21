@@ -13,14 +13,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 
 import Card from '@mui/material/Card';
+import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
 import { useUserAuth } from './UseAuthContext';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="#">
-        My app
+      <Link color="inherit" to={"/"}>
+        SkillSphere
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -80,6 +81,10 @@ const postUserData = (e) =>{
     }
   }
 
+  const toggleswitch=()=>{
+    navi('/adminsignup')
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -93,7 +98,9 @@ const postUserData = (e) =>{
             p:2,
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Button onClick={toggleswitch}><SwitchAccessShortcutAddIcon/><p>Switch to Admin SignUp</p></Button>
+
+          <Avatar sx={{ m: 2, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -102,7 +109,7 @@ const postUserData = (e) =>{
 
           {error && <Alert sx={{marginTop:2}} severity="error">{error}</Alert>}
 
-          <form noValidate method='POST' sx={{ mt: 3 }}>
+          <form noValidate method='POST' autoComplete='off' sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField

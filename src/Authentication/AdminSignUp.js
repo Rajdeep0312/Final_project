@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -16,8 +14,6 @@ import Alert from '@mui/material/Alert';
 
 import Card from '@mui/material/Card';
 import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
-import { Database, get, ref } from 'firebase/database';
-import { database } from '../firebase/firebase';
 
 
 function Copyright(props) {
@@ -38,13 +34,13 @@ const theme = createTheme();
 
 
 
-export default function AdminLogin(){
+export default function AdminSignUp(){
 
   const [adminUsers, setAdminUsers] = useState({
-    useremail : "",
+    uniqueId : "",
+    email : "",
     password : ""
   })
-  const [adminUserList, setAdminUserList] = useState([])
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -56,50 +52,36 @@ export default function AdminLogin(){
     setAdminUsers({...adminUsers, [name]:value})
   }
 
-  useEffect(() => {
-    const adminRef = ref(database, 'AdminUsers');
-    get(adminRef).then((snapshot) =>{
-      if (snapshot.exists) { 
-        let records = []
-        snapshot.forEach(childSnapshot=>{
-          let keyName = childSnapshot.key;
-          let data = childSnapshot.val();
-          records.push({"key":keyName,"data":data})
-        })
-        setAdminUserList(records)
-      }
-      else{
-        alert("no data available");
-      }
-    }).catch((err)=>{
-      console.error(err);
-    })  
-  }, [])
 
   const handleSubmit = async (event) => {
       event.preventDefault();   
-      const {useremail, password} = adminUsers;
-      adminUserList.map((data,key)=>{
-        let id = key;
-        if (data.data.email === useremail) {
-          if (data.data.password === password) {
-            alert("email and password matched");
-            navigate("/admindashboard");
-          }else{
-            alert("password dont matched")
-          }
-        }else{
-          alert("email dont matched")
-        }  
-      });
-      
+      const {uniqueId, email, password} = adminUsers;
+      if (uniqueId && email && password) {
+        const response = await fetch(`https://final-year-project-b1ebf-default-rtdb.firebaseio.com/AdminUsers.json`, {
+          method: "POST",
+          headers:{
+            "Content-Type" : "application/json",
+          },
+          body: JSON.stringify({
+            uniqueId, email, password
+          }),
+        });
+        if (response) {
+          alert("data submitted")
+          setError("");
+          navigate("/admindashboard");
+        } else {
+          alert("fill user data")
+        }
+      }else {
+        alert("fill user data")
+      }
     };
-    
 
 
 
 const toggleswitch=()=>{
-  navigate('/login')
+  navigate('/register')
 }
 
 
@@ -120,7 +102,7 @@ const toggleswitch=()=>{
           }}
         >
 
-          <Button onClick={toggleswitch}><SwitchAccessShortcutAddIcon/><p>Switch to Student Login</p></Button>
+          <Button onClick={toggleswitch}><SwitchAccessShortcutAddIcon/><p>Switch to Student SignUp</p></Button>
 
 
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -137,11 +119,21 @@ const toggleswitch=()=>{
               margin="normal"
               required
               fullWidth
-              id="useremail"
-              label="Username or Email Address"
-              name="useremail"
-              type='text'
-              value={adminUsers.useremail}
+              id="uniqueId"
+              label="Username"
+              name="uniqueId"
+              value={adminUsers.uniqueId}
+              autoFocus
+              onChange={handleChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              value={adminUsers.email}
               onChange={handleChange}
             />
             <TextField
@@ -170,8 +162,8 @@ const toggleswitch=()=>{
                 </Link>
               </Grid>
               <Grid item>
-                <Link to='/adminsignup'>
-                  Don't have an account? Sign Up
+                <Link to='/adminlogin'>
+                    Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>

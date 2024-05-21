@@ -70,7 +70,7 @@ const Course = () => {
                             <Button variant='contained' size="small" onClick={()=>{
                                 navi(`/viewcourses/${d.name}/${d.id}`)
                             }}>View</Button>
-                            <Button variant='outlined' size="small">Apply Now</Button>
+                            <Button variant='outlined' onClick={()=>{navi(`/apply/${d.id}/${d.name}`)}} size="small">Apply Now</Button>
                         </CardActions>
                     </Card>
                 </Grid>
@@ -79,6 +79,7 @@ const Course = () => {
                 </Grid>
                 </Container>     
                 </>
+                
             }
                 
             

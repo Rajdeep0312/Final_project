@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -15,7 +15,6 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { useUserAuth } from '../Authentication/UseAuthContext';
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, Outlet } from 'react-router-dom';
@@ -33,6 +32,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { get, ref } from 'firebase/database';
+import { database } from '../firebase/firebase';
 
 
 
@@ -115,13 +116,14 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
+  const [adminList, setAdminList] = useState([]);
+  const [email, setEmail] = useState("");
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
 
   const [error, setError] = useState("")
-  const { user, logout } = useUserAuth();
 
   const sidebar = [
     {
@@ -143,16 +145,29 @@ function DashboardContent() {
       link:'/'
     }
   ];
-  
+
+  useEffect(() => {
+    const adminRef = ref(database, 'AdminUsers');
+    get(adminRef).then((snapshot) =>{
+      if (snapshot.exists) { 
+        let records = []
+        snapshot.forEach(childSnapshot=>{
+          let keyName = childSnapshot.key;
+          let data = childSnapshot.val();
+          records.push({"key":keyName,"data":data})
+        })
+        setAdminList(records)
+      }
+      else{
+        alert("no data available");
+      }
+    }).catch((err)=>{
+      console.error(err);
+    })  
+  }, [])  
 
   const handleLogout = async (e) =>{
-    try {
-      await logout();
-    } catch (err) {
-      setError(err.message);
-      console.log(err);
-      console.log(error);
-    }
+    
   }
 
 
@@ -186,7 +201,7 @@ function DashboardContent() {
             </IconButton>
 
 
-            {user && user.displayName}
+            
             
             <IconButton color="inherit" onClick={handleLogout}>
               <LogoutIcon/>
