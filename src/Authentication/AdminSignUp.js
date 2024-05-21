@@ -109,7 +109,7 @@ const toggleswitch=()=>{
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Admin Login
+            Admin SignUp
           </Typography>
 
           {error && <Alert sx={{marginTop:2}} severity="error">{error}</Alert>}
@@ -153,14 +153,9 @@ const toggleswitch=()=>{
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Login
+              SignUp
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
                 <Link to='/adminlogin'>
                     Already have an account? Sign in
