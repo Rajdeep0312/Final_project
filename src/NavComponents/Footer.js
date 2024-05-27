@@ -16,8 +16,8 @@ function Copyright() {
     return (
       <Typography variant="body2">
         {'Copyright © '}
-        <Link color="inherit" href="#">
-          LOGO
+        <Link color="inherit" href="/">
+          SkillSphere
         </Link>{' '}
         {new Date().getFullYear()}
         {'.'}

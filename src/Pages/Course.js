@@ -10,31 +10,39 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../Authentication/UseAuthContext';
-import CircularProgress from '@mui/material/CircularProgress';
+import { get, ref } from 'firebase/database';
+import { database } from '../firebase/firebase';
+import Loading from '../Components/Loading';
 
 
 const Course = () => {
 
     const [courseData, setCourseData] = useState([])
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     const navi = useNavigate();
 
-    const { data } = useUserAuth();
-
     useEffect(() => {
-        function dataLoading(){
-            if (!data) {
-                setLoading(true);
-            }
-            else{
-                setLoading(false)
-                setCourseData(data.data)
-            }
-        }
-        dataLoading();
-        
-    }, [data]);  
+        const courseRef = ref(database, 'Coursedata');
+        get(courseRef).then((snapshot) =>{
+          if (snapshot.exists) { 
+            setLoading(false)
+            let records = []
+            snapshot.forEach(childSnapshot=>{
+              let keyName = childSnapshot.key;
+              let data = childSnapshot.val();
+              records.push({"key":keyName,"data":data})
+            })
+            setCourseData(records)
+          }
+          else{
+            alert("no data available");
+          }
+        }).catch((err)=>{
+          setError(err.messages)
+        })
+      }, [])  
     
 
     
@@ -42,35 +50,37 @@ const Course = () => {
     <>
         <DrawerAppBar/>
             <Box sx={{p:2}}>
-                <Toolbar/>
-
-                {loading ? <CircularProgress/>
+                {loading ? <Loading/>
                 :
                 <>
+                <Toolbar/>
                 <Typography variant='h3' sx={{textAlign : 'center', marginBottom : "2rem" , padding : "5px"}}>Courses</Typography>
                 <Container sx={{mx:'auto', }}>
                 <Grid container spacing={3}>
-                {courseData.map((d)=>(
-                <Grid key={d.id} item xs={2} sm={4} md={4} sx={{ padding: "0px"}}>
+                {courseData.map((data,id)=>(
+                <Grid key={id} item xs={2} sm={4} md={4} sx={{ padding: "0px"}}>
                     <Card sx={{ maxWidth: 345 }}>
                         <CardMedia
                             sx={{ height: 140 }}
                             image="./images/pic3.jpg"
-                            title="green iguana"
+                            title="course"
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                            {d.name}
+                            {data.data.CourseName}
+                            </Typography>
+                            <Typography variant="body1" color="text.secondary">
+                            {data.data.CourseId}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, nobis.
+                            {data.data.About}
                             </Typography>
                         </CardContent>
                         <CardActions>
                             <Button variant='contained' size="small" onClick={()=>{
-                                navi(`/viewcourses/${d.name}/${d.id}`)
+                                navi(`/viewcourses/${data.data.CourseName}/${data.data.CourseId}`)
                             }}>View</Button>
-                            <Button variant='outlined' onClick={()=>{navi(`/apply/${d.id}/${d.name}`)}} size="small">Apply Now</Button>
+                            <Button variant='outlined' onClick={()=>{navi(`/applynow/${data.data.CourseId}/${data.data.CourseName}`)}} size="small">Apply Now</Button>
                         </CardActions>
                     </Card>
                 </Grid>

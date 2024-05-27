@@ -5,6 +5,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import Loading from '../Components/Loading';
 
 
 import Dialog from '@mui/material/Dialog';
@@ -12,7 +13,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { get, ref } from 'firebase/database';
+import { get, ref, set } from 'firebase/database';
 import { database } from '../firebase/firebase';
 
 
@@ -23,12 +24,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const AdminCourse = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true)
+
+  const [subCourse, setSubCourse] = useState([{course : ""}]);
+
+  const [picture, setPicture] = useState("");
   const [courseData, setCourseData] = useState({
     courseId : "",
     courseName : "",
     instructor : "",
     about : "",
-    subCourse: "",
   });
   const [error, setError] = useState("");
   const [crseData, setCrseData] = useState([])
@@ -39,37 +44,35 @@ const AdminCourse = () => {
     value = e.target.value;
     setCourseData({...courseData, [name]:value})
   }
-  
 
-  const formPost = async (e) =>{
+  async function formPost(e) {
     e.preventDefault();
-    const {courseId, courseName, instructor, about, subCourse} = courseData;
-      if (courseId && courseName && instructor && about && subCourse) {
-      const response = await fetch(`https://final-year-project-b1ebf-default-rtdb.firebaseio.com/CoursesData.json`, {
-        method: "POST",
-        headers:{
-          "Content-Type" : "application/json",
-        },
-        body: JSON.stringify({
-          courseId, courseName, instructor, about, subCourse
-        }),
-      });
-      if (response) {
-        alert("data submitted")
-        setError("");
-        setDialogOpen(false);
-      } else {
-        alert("fill user data")
+    const {courseId, courseName, instructor, about} = courseData;
+      if (courseId && courseName && instructor && about) {
+        const res = set(ref(database, `Coursedata/${courseId}`), {
+          CourseId: courseId,
+          CourseName : courseName, 
+          Instructor : instructor, 
+          About : about, 
+          SubCourse:subCourse     
+        });
+        if (res) {
+          alert("Data Submitted");
+          setDialogOpen(false);
+        }else{
+          alert("fill user data");
+        }
+        
+      }else{
+        alert("fill user data");
       }
-    }else {
-      alert("fill user data")
-    }
   }
 
   useEffect(() => {
-    const courseRef = ref(database, 'CoursesData');
+    const courseRef = ref(database, 'Coursedata');
     get(courseRef).then((snapshot) =>{
       if (snapshot.exists) { 
+        setLoading(false);
         let records = []
         snapshot.forEach(childSnapshot=>{
           let keyName = childSnapshot.key;
@@ -87,28 +90,46 @@ const AdminCourse = () => {
   }, [])  
 
 
+  // subcourse handled-------------------------------------------
+  const handleAdd = ()=>{
+    setSubCourse([...subCourse, {course : ""}]);
+  }
+
+  const handleRemove = (index) =>{
+    const list = [...subCourse];
+    list.splice(index,1);
+    setSubCourse(list);
+  }
+  const handleCourseChange = (e, index) =>{
+    const {name, value} = e.target;
+    const list = [...subCourse];
+    list[index][name] = value;
+    setSubCourse(list)
+  }
+
   return (
     <>
       {error && <Alert sx={{zIndex:50}}>{error}</Alert>}
       <Box>
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ alignItems:"center"}}>
-          {
+          {loading ? <Loading/>:          
             crseData.map((data, id)=>(
               <Grid item key={id}>
                 <Card sx={{ Width: "75px" }}>
                   <CardContent>
                     <Typography fontWeight={600} gutterBottom>
-                      {data.data.courseName}
+                      {data.data.CourseName}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      Course Id : {data.data.courseId}
+                      Course Id : {data.data.CourseId}
                     </Typography>
                     <Typography variant="body2">
-                      {data.data.about}
+                      {data.data.About}
                     </Typography>
                   </CardContent>
                   <CardActions>
                     <Button size="small">Edit</Button>
+                    <Button size="small">Delete</Button>
                   </CardActions>
                 </Card>
               </Grid>
@@ -173,6 +194,20 @@ const AdminCourse = () => {
                   value={courseData.instructor}
                   onChange={handleChange}
                 />
+                {/* course photo-------------------------------------- */}
+                <Box sx={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+                <TextField
+                  margin="normal" 
+                  name="file"
+                  type="file"
+                  id="file"
+                  value={picture}
+                  onChange={(e)=>setPicture(e.target.value)}
+                />
+                  <Box>
+                    <Button onClick={()=>setPicture("")}>Cancel</Button>
+                  </Box>
+                </Box>
 
                 <Typography variant='h6' fontWeight={500} component="h6" marginLeft={2} marginTop={2}>About Course</Typography>
 
@@ -189,19 +224,30 @@ const AdminCourse = () => {
                   onChange={handleChange}
                 />
 
+
+
                 <Typography variant='h6' fontWeight={500} component="h6" marginLeft={2} marginTop={2}>Add Sub Course</Typography>
 
-                <Box sx={{ display:"flex", gap:"1em",alignItems:"center"}}>
-                  <TextField
-                    margin="normal"                  
-                    name="subCourse"
-                    label="Sub Course Name"
-                    type="text"
-                    id="subCourse"
-                    value={courseData.subCourse}
-                    onChange={handleChange}
-                  />
-                  <Button variant='outlined'>Add</Button>
+                <Box sx={{ display:"flex", flexDirection:"column"}}>
+                  {subCourse.map((courselist,index)=>(
+                    <Box key={index} sx={{display:"flex", alignItems:"center", gap:"1em"}}>
+                      <TextField
+                        margin="normal"                  
+                        name="course"
+                        label="Sub Course Name"
+                        type="text"
+                        id="course"
+                        value={courselist.course}
+                        onChange={(e)=>handleCourseChange(e, index)}
+                      />
+                      {subCourse.length > 1 && 
+                      <Button onClick={()=>handleRemove(index)} color='error' variant='outlined'>Remove</Button>
+                      }
+                      {subCourse.length - 1 === index && subCourse.length < 5 &&
+                      <Button onClick={handleAdd} color='success' variant='outlined'>Add</Button>
+                      }
+                    </Box>
+                  ))}
                 </Box>
 
                 <DialogActions>
@@ -218,3 +264,9 @@ const AdminCourse = () => {
 }
 
 export default AdminCourse
+
+// export function CourseData(props) {
+//   return (
+    
+//   )
+// }

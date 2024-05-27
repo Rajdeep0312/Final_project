@@ -7,7 +7,6 @@ import HomePage from './Pages/HomePage';
 import Contacts from './singlepage/Contacts';
 import About from './singlepage/About';
 import AdminLogin from './Authentication/AdminLogin';
-import AdminSignUp from './Authentication/AdminSignUp';
 import SignUp from './Authentication/SignUp';
 import { Certificate } from './Pages/Certificate';
 import { UserAuthContextProvider } from './Authentication/UseAuthContext';
@@ -18,11 +17,11 @@ import ExamPage from './Pages/ExamPage';
 import Course from './Pages/Course';
 import ViewCourse from './Pages/ViewCourse';
 import ResetPass from './Pages/ResetPass';
-import Apply from './Pages/Apply';
 import DashboardAdmin from './Admin/DashboardAdmin';
 import Users from './Admin/Users';
 import AdminCourse from './Admin/AdminCourse';
 import ProtectedAdminRoute from './Admin/ProtectedAdminRoute';
+import ApplyWithPayment from './Pages/ApplyWithPayment';
 
   
 
@@ -37,8 +36,6 @@ function App() {
           <Route path='/' element={<HomePage/>}/>
           <Route exact path='/login' element={<Login/>}/>
           <Route exact path='/register' element={<SignUp/>}/>
-          <Route exact path='/adminlogin' element={<AdminLogin/>}/>
-          <Route exact path='/adminsignup' element={<AdminSignUp/>}/>
 
           <Route exact path='/dashboard' element={
             <ProtectedRoute>
@@ -55,11 +52,10 @@ function App() {
             </ProtectedRoute>
           }/>
 
-          {/* Admin--------------- */}
+          {/* Admin--------------- */}          
+          <Route exact path='/adminlogin' element={<AdminLogin />}/>
           <Route path='/admindashboard' element={
-            <ProtectedAdminRoute>
               <DashboardAdmin/>
-            </ProtectedAdminRoute>
           }>
             <Route index element={<Navigate to="users" replace/>}/>
             <Route path='users' element={<Users/>}/>
@@ -69,7 +65,7 @@ function App() {
           <Route exact path='/contact' element={<Contacts/>}/>
           <Route exact path='/about' element={<About/>}/>
           <Route exact path='/viewcourses/:name/:id' element={<ViewCourse/>}/>
-          <Route exact path='/apply/:id/:cname' element={<Apply/>}/>
+          <Route exact path='/applynow/:id/:cname' element={<ApplyWithPayment/>}/>
           <Route exact path='/certificate' element={<Certificate/>}/>
           <Route exact path='/courses' element={<Course/>}/>
           <Route exact path='/resetpassword' element={<ResetPass/>}/>

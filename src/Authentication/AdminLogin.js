@@ -16,8 +16,9 @@ import Alert from '@mui/material/Alert';
 
 import Card from '@mui/material/Card';
 import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
-import { Database, get, ref } from 'firebase/database';
+import { get, ref } from 'firebase/database';
 import { database } from '../firebase/firebase';
+import { useUserAuth } from './UseAuthContext';
 
 
 function Copyright(props) {
@@ -38,13 +39,15 @@ const theme = createTheme();
 
 
 
-export default function AdminLogin(){
+export default function AdminLogin(props){
+
+  const { adminUsersData } = useUserAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [adminUsers, setAdminUsers] = useState({
     useremail : "",
     password : ""
   })
-  const [adminUserList, setAdminUserList] = useState([])
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -56,43 +59,24 @@ export default function AdminLogin(){
     setAdminUsers({...adminUsers, [name]:value})
   }
 
-  useEffect(() => {
-    const adminRef = ref(database, 'AdminUsers');
-    get(adminRef).then((snapshot) =>{
-      if (snapshot.exists) { 
-        let records = []
-        snapshot.forEach(childSnapshot=>{
-          let keyName = childSnapshot.key;
-          let data = childSnapshot.val();
-          records.push({"key":keyName,"data":data})
-        })
-        setAdminUserList(records)
-      }
-      else{
-        alert("no data available");
-      }
-    }).catch((err)=>{
-      console.error(err);
-    })  
-  }, [])
+
 
   const handleSubmit = async (event) => {
       event.preventDefault();   
       const {useremail, password} = adminUsers;
-      adminUserList.map((data,key)=>{
-        let id = key;
+      adminUsersData && adminUsersData.map((data)=>{
         if (data.data.email === useremail) {
           if (data.data.password === password) {
             alert("email and password matched");
             navigate("/admindashboard");
+            setIsLoggedIn(true);
           }else{
             alert("password dont matched")
           }
         }else{
           alert("email dont matched")
         }  
-      });
-      
+      });      
     };
     
 

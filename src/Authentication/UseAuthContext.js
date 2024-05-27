@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { createContext, useContext, useState, useEffect } from "react";
-import { auth } from "../firebase/firebase";
-import { fetchData } from "../Apihandler/api";
+import { auth, database } from "../firebase/firebase";
+import { get, ref } from "firebase/database";
 
 const userAuthContext = createContext();
 
@@ -10,7 +10,7 @@ const userAuthContext = createContext();
 export function UserAuthContextProvider({children}) {
 
     const [user, setUser] = useState({});
-    const [data, setData] = useState(null);
+    const [adminUsersData, setAdminUsersData] = useState({name:"", isAuthenticated:false})
 
 
     function signUp(email,password){
@@ -22,9 +22,7 @@ export function UserAuthContextProvider({children}) {
         return signInWithEmailAndPassword(auth, email, password);
     }
 
-    function adminLogin(email,password) {
-        return signInWithEmailAndPassword(auth, email, password);        
-    }
+    
 
     function logout(){
         return signOut(auth);
@@ -39,6 +37,11 @@ export function UserAuthContextProvider({children}) {
         return sendPasswordResetEmail(auth, email);
     }
 
+
+    function Adminlogout() {
+        return setAdminUsersData({...adminUsersData, isAuthenticated:false})
+    }
+
     
 
 
@@ -51,27 +54,21 @@ export function UserAuthContextProvider({children}) {
             setUser(currentUser);
         });
 
-        // Api calling---------------------------------------------------------
-        const getData = async () => {
-            const result = await fetchData();
-            setData(result);
-        };
         return ()=>{
             unsubscribe();
-            getData();
         }    
     }, []);
 
 
     const value = {
         user,
-        adminLogin,
         signUp,
         login,
         logout,
         googleSign,
-        data,
-        resetPassword
+        resetPassword,
+        adminUsersData,
+        Adminlogout
     }
     
 
